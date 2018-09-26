@@ -1,0 +1,30 @@
+$breakpoints: (
+	xs: 0,
+	md: 669px,
+	lg: 992px,
+) !default;
+
+@mixin media($nameStart:null, $nameEnd: null) {
+	@if ($nameStart == null) {
+		$nameStart: nth(map_keys($breakpoints), 1);
+	}
+	@if ($nameEnd == null) {
+		@if (map_get($breakpoints, $nameStart) == 0) {
+			@content;
+		}
+		@else {
+			@media (min-width: map_get($breakpoints, $nameStart)) {
+				@content;
+			}
+		}
+	}
+	@else {
+		@if (map_get($breakpoints, $nameStart) != null) {
+			@if (map_get($breakpoints, $nameEnd) != null) {
+				@media (min-width : map_get($breakpoints, $nameStart)) and (max-width : map_get($breakpoints, $nameEnd) - 1px) {
+					@content;
+				}
+			}
+		}
+	}
+}
